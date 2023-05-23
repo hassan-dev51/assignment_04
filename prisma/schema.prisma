@@ -17,5 +17,5 @@ model createBook {
   bookAuthor  String
   bookPrice   Int
   available   Boolean
-  description String
+  description String 
 }

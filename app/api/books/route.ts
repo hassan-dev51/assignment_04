@@ -25,10 +25,22 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ message: "succussfully added book" });
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const data = await prisma.createBook.findMany();
-    return NextResponse.json(data, { status: 200 });
+    const { searchParams } = new URL(req.url);
+    let id = searchParams.get("id");
+
+    if (id) {
+      const data = await prisma.createBook.findMany({
+        where: {
+          id: parseInt(id, 10),
+        },
+      });
+      return NextResponse.json(data);
+    } else {
+      const data = await prisma.createBook.findMany();
+      return NextResponse.json(data, { status: 200 });
+    }
   } catch (error) {
     return NextResponse.json(
       { message: "failed to retieve data" },
