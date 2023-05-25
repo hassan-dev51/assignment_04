@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ message: "succussfully added book" });
 }
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     let id = searchParams.get("id");
@@ -36,6 +36,7 @@ export async function GET(req: Request) {
           id: parseInt(id, 10),
         },
       });
+      // prisma.$disconnect()
       return NextResponse.json(data);
     } else {
       const data = await prisma.createBook.findMany();

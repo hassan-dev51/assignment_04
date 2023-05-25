@@ -1,4 +1,3 @@
-"use client";
 import { Book } from "@/components/Books";
 import Navbar from "@/components/Navbar";
 
@@ -12,9 +11,7 @@ export const getBooks = async (id: string) => {
 };
 const SingleBook = async ({ params }: { params: { id: string } }) => {
   const book = await getBooks(params.id);
-  const reserverd = () => {
-    alert("reserverd");
-  };
+
   return (
     <div className="bg-[#000814] h-screen">
       <Navbar />
@@ -40,7 +37,6 @@ const SingleBook = async ({ params }: { params: { id: string } }) => {
             </div>
             <button
               type="button"
-              onClick={reserverd}
               className="text-[#000814] bg-blue-600 px-4 py-2 rounded-3xl mt-6"
             >
               Reserve Book
