@@ -7,13 +7,14 @@ interface AuthenticatedRequest extends NextRequest {
     id: string;
   };
 }
+
 let redirectToLogin = false;
-export async function middleware(req: NextRequest, res: NextResponse) {
+export async function middleware(req: NextRequest) {
   let token: string | undefined;
 
   if (req.cookies.has("token")) {
     token = req.cookies.get("token")?.value;
-  } else if (req.headers.get("Authorization")?.startsWith("Bearer")) {
+  } else if (req.headers.get("Authorization")?.startsWith("Bearer ")) {
     token = req.headers.get("Authorization")?.substring(7);
   }
 
@@ -27,7 +28,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   ) {
     return getErrorResponse(
       401,
-      "You are not logged in. Please provide a token to gain access. this is in middleware"
+      "You are not logged in. Please provide a token to gain access."
     );
   }
 
@@ -36,8 +37,8 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   try {
     if (token) {
       const { sub } = await verifyJWT<{ sub: string }>(token);
-      (req as AuthenticatedRequest).user = { id: sub };
       response.headers.set("X-USER-ID", sub);
+      (req as AuthenticatedRequest).user = { id: sub };
     }
   } catch (error) {
     redirectToLogin = true;
@@ -53,7 +54,15 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   const authUser = (req as AuthenticatedRequest).user;
 
   if (!authUser) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(
+      new URL(
+        `/login?${new URLSearchParams({
+          error: "badauth",
+          forceLogin: "true",
+        })}`,
+        req.url
+      )
+    );
   }
 
   if (req.url.includes("/login") && authUser) {
@@ -64,5 +73,5 @@ export async function middleware(req: NextRequest, res: NextResponse) {
 }
 
 export const config = {
-  matcher: ["/order"],
+  matcher: ["/order", "/login", "/api/users/:path*", "/api/auth/logout"],
 };
