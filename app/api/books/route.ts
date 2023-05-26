@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
 
   await prisma.createBook.create({
     data: {
+      
       bookName: bookName,
       bookAuthor: bookAuthor,
       bookPrice: parseInt(bookPrice, 10),

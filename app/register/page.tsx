@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 
 type FormData = {
   name: string;
-  lastname: string;
+  delieveryAddress: string;
   email: string;
   password: string;
 };
@@ -18,7 +18,7 @@ const schema = yup.object().shape({
     .string()
     .matches(/^[A-Za-z ]+$/, "Only alphabets are allowed")
     .required("Name is required"),
-  lastname: yup
+  delieveryAddress: yup
     .string()
     .matches(/^[A-Za-z ]+$/, "Only alphabets are allowed")
     .required("Lastname is required"),
@@ -48,7 +48,7 @@ const Reginster = () => {
   const FormSubmit: SubmitHandler<FormData> = async (d, e) => {
     try {
       const res = await fetch(
-        "http://localhost:3000/api/register",
+        "http://localhost:3000/api/auth/register",
 
         {
           method: "POST",
@@ -57,9 +57,9 @@ const Reginster = () => {
           },
           body: JSON.stringify({
             name: d.name,
-            lastname: d.lastname,
             email: d.email,
             password: d.password,
+            delieveryAddress: d.delieveryAddress,
           }),
         }
       );
@@ -78,6 +78,7 @@ const Reginster = () => {
     } catch (error) {
       console.log(error);
     }
+    console.log(d);
   };
 
   return (
@@ -117,14 +118,16 @@ const Reginster = () => {
               <span className=" font-medium mb-4">Last Name</span>
               <input
                 type="text"
-                {...register("lastname")}
+                {...register("delieveryAddress")}
                 placeholder="What's your last name?"
                 required
                 className="bg-[#EDF2F7] py-4 px-6 placeholder:text-secondary outline-none border-none font-medium w-[272px]"
               />
             </label>
-            {errors.lastname && (
-              <p className="text-red-400 p-1">{errors.lastname.message}</p>
+            {errors.delieveryAddress && (
+              <p className="text-red-400 p-1">
+                {errors.delieveryAddress.message}
+              </p>
             )}
           </div>
 

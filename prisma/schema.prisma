@@ -17,5 +17,15 @@ model createBook {
   bookAuthor  String
   bookPrice   Int
   available   Boolean
-  description String 
+  description String
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  name             String
+  email            String    @unique
+  password         String
+  delieveryAddress String?
+  role             String?   @default("user")
+  createdAt        DateTime? @default(now())
 }

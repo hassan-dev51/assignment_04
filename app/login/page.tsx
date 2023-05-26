@@ -20,7 +20,7 @@ const Login = () => {
   const router = useRouter();
 
   const LoginSubmit: SubmitHandler<User> = async (d, e) => {
-    const res = await fetch("http://localhost:3000/api/login", {
+    const res = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const Login = () => {
     if (res.status === 200) {
       alert("Login successful");
       router.refresh();
-      router.push("/orderPage");
+      router.push("/order");
       e?.target.reset();
     } else if (res.status === 429) {
       alert("invalid password and email");

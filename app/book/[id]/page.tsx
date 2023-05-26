@@ -1,5 +1,6 @@
 import { Book } from "@/components/Books";
 import Navbar from "@/components/Navbar";
+import Link from "next/link";
 
 export const getBooks = async (id: string) => {
   const res = await fetch(`http://localhost:3000/api/books?id=${id}`, {
@@ -35,12 +36,12 @@ const SingleBook = async ({ params }: { params: { id: string } }) => {
                 </div>
               </div>
             </div>
-            <button
-              type="button"
+            <Link
+              href={"/order"}
               className="text-[#000814] bg-blue-600 px-4 py-2 rounded-3xl mt-6"
             >
               Reserve Book
-            </button>
+            </Link>
           </div>
         ))}
       </div>
